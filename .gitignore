@@ -1,0 +1,7 @@
+**.idea/
+outputs/
+**__pycache__/*
+*.json
+*.html
+*.csv
+!musicians.csv
