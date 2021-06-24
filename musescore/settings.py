@@ -16,13 +16,13 @@ FILE_NAME = 'path/outputfile.ext'
 ITEM_PIPELINES = {
     'musescore.pipelines.MusescorePipeline': 600,
 }
-
+HTTPCACHE_ENABLED=False
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'musescore (+http://www.yourdomain.com)'
+DUPEFILTER_CLASS = 'scrapy.dupefilters.BaseDupeFilter'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
-
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
 

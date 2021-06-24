@@ -9,6 +9,13 @@ from scrapy import Selector
 from ..items import MusescoreItem
 
 
+def format_search_word(search_word: str) -> str:
+    search_word = search_word.replace('&', '%26')
+    search_word = search_word.replace(' ', '+')
+
+    return search_word
+
+
 class MusescoreSpider(scrapy.Spider):
     name = "musescore_spider"
     start_url: str = 'https://musescore.com/sheetmusic?page=%s&text=%s'
@@ -18,9 +25,8 @@ class MusescoreSpider(scrapy.Spider):
         search_words = pandas.read_csv('musicians.csv')['name'].values
 
         for search_keyword in search_words:
-            url = self.start_url % ('1', search_keyword.replace(' ', '+'))
+            url = self.start_url % ('1', format_search_word(search_keyword))
             yield scrapy.Request(url=url, callback=self.parse, meta={'search_keyword': search_keyword, 'url': url})
-            break
 
     def parse(self, response, **kwargs):
 
@@ -28,20 +34,17 @@ class MusescoreSpider(scrapy.Spider):
         page_data = selector.xpath("//div[@class='js-store']/@data-content").extract_first()
         page_data = json.loads(page_data)
 
-        first_page_results = page_data['store']['page']['data']['scores']
-        self.parse_page_results(first_page_results, **kwargs)
-
         try:
             results_count = page_data['store']['page']['data']['pagination']['totalCount']
         except KeyError:
             results_count = 20
         pages_count = results_count // self.result_per_page + 1
-        print(f'{pages_count}' * 1000)
-        for page_num in range(2, pages_count):
-            url = self.start_url % (page_num, response.meta['search_keyword'].replace(' ', '+'))
+        for page_num in range(1, pages_count + 1):
+            url = self.start_url % (page_num, format_search_word(response.meta['search_keyword']))
+
             yield scrapy.Request(url=url, callback=self.parse_pages, meta=response.meta)
 
-    def parse_pages(self, response, **kwargs):
+    def parse_pages(self, response):
         selector = Selector(response)
         page_data = selector.xpath("//div[@class='js-store']/@data-content").extract_first()
         page_data = json.loads(page_data)
@@ -50,6 +53,7 @@ class MusescoreSpider(scrapy.Spider):
         return self.parse_page_results(page_results, **response.meta)
 
     def parse_page_results(self, results: List[dict], **kwargs):
+
         for result in results:
             yield self.parse_result(result, **kwargs)
 
