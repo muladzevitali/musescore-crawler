@@ -10,10 +10,21 @@ from ..items import MusescoreItem
 
 
 def format_search_word(search_word: str) -> str:
+    """
+    Function removes unwanted characters from query parameter
+    """
     search_word = search_word.replace('&', '%26')
     search_word = search_word.replace(' ', '+')
 
     return search_word
+
+def prettify_title(title: str) -> str:
+    html_tags_to_remove = ['[b]', '[/b]']
+
+    for tag in html_tags_to_remove:
+        title = title.replace(tag, '')
+
+    return title
 
 
 class MusescoreSpider(scrapy.Spider):
@@ -59,23 +70,24 @@ class MusescoreSpider(scrapy.Spider):
 
     def parse_result(self, result: dict, **kwargs):
         item = MusescoreItem()
-        item.url = result.get('url')
-        item.title = result.get('title')
-        item.search_keyword = kwargs.get('search_keyword')
-        item.parts = result.get('parts')
-        item.duration = result.get('duration')
-        item.pages = result.get('pages_count')
-        item.measures = result.get('measures')
-        item.key_signature = result.get('keysig')
-        item.ensemble = result.get('description')
-        item.part_names = ','.join(result.get('parts_names'))
-        item.favourites = result.get('favourites_count')
-        item.views = result.get('hits')
-        item.rating = result.get('rating', {}).get('rating')
-        item.uploaded_on = datetime.fromtimestamp(result.get('date_created', 0))
-        item.instruments = ','.join(result.get('instruments'))
+
+        item['url'] = result.get('url')
+        item['title'] = prettify_title(result.get('title'))
+        item['search_keyword'] = kwargs.get('search_keyword')
+        item['parts'] = result.get('parts')
+        item['duration'] = result.get('duration')
+        item['pages'] = result.get('pages_count')
+        item['measures'] = result.get('measures')
+        item['key_signature'] = result.get('keysig')
+        item['ensemble'] = result.get('description')
+        item['part_names'] = ','.join(result.get('parts_names'))
+        item['favourites'] = result.get('favourites_count')
+        item['views'] = result.get('hits')
+        item['rating'] = result.get('rating', {}).get('rating')
+        item['uploaded_on'] = datetime.fromtimestamp(result.get('date_created', 0))
+        item['instruments'] = ','.join(result.get('instruments'))
         if result.get('instrumentations'):
             instrumentations = [each.get('name') for each in result.get('instrumentations')]
-            item.instrumentations = ','.join(instrumentations)
+            item['instrumentations'] = ','.join(instrumentations)
 
         return item
