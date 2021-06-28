@@ -18,6 +18,7 @@ def format_search_word(search_word: str) -> str:
 
     return search_word
 
+
 def prettify_title(title: str) -> str:
     html_tags_to_remove = ['[b]', '[/b]']
 

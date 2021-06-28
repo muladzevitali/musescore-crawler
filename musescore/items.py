@@ -3,7 +3,6 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
-from dataclasses import dataclass, field
 from typing import Optional
 
 import scrapy
@@ -26,3 +25,9 @@ class MusescoreItem(scrapy.Item):
     uploaded_on: str = scrapy.Field(default=None)
     instruments: str = scrapy.Field(default=None)
     instrumentations: str = scrapy.Field(default=None)
+
+
+class WikipediaItem(scrapy.Item):
+    group: str = scrapy.Field(default=None)
+    class_name: str = scrapy.Field(default=None)
+    artis_name: str = scrapy.Field(default=None)
