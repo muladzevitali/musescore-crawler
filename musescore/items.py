@@ -29,5 +29,5 @@ class MusescoreItem(scrapy.Item):
 
 class WikipediaItem(scrapy.Item):
     group: str = scrapy.Field(default=None)
-    class_name: str = scrapy.Field(default=None)
-    artis_name: str = scrapy.Field(default=None)
+    group_instance: str = scrapy.Field(default=None)
+    artist_name: str = scrapy.Field(default=None)
