@@ -27,8 +27,14 @@ class MusescorePipeline:
     def _exporter_for_item(self, item):
         adapter = ItemAdapter(item)
         keyword = adapter['search_keyword']
+        category = adapter['category']
+        if not adapter['title']:
+            return
         if keyword not in self.keyword_to_exporter:
-            output_file_path = self.output_folder_path.joinpath(f'{keyword}.csv')
+            output_folder = self.output_folder_path.joinpath(category)
+            output_folder.mkdir(parents=True, exist_ok=True)
+
+            output_file_path = output_folder.joinpath(f'{keyword}.csv')
             csv_file = open(str(output_file_path), 'wb')
             exporter = CsvItemExporter(csv_file)
             exporter.start_exporting()
@@ -37,7 +43,6 @@ class MusescorePipeline:
         return self.keyword_to_exporter[keyword][0]
 
     def process_item(self, item, spider):
-        print(item)
         exporter = self._exporter_for_item(item)
         exporter.export_item(item)
         return item
@@ -66,7 +71,6 @@ class WikipediaPipeline:
 
         if keyword not in self.keyword_to_exporter:
             output_file_path = output_folder_path.joinpath(f'{keyword}.csv')
-            print(output_file_path)
             csv_file = open(str(output_file_path), 'wb')
             exporter = CsvItemExporter(csv_file)
             exporter.start_exporting()
@@ -75,7 +79,7 @@ class WikipediaPipeline:
         return self.keyword_to_exporter[keyword][0]
 
     def process_item(self, item, spider):
-        print(item)
         exporter = self._exporter_for_item(item)
         exporter.export_item(item)
+
         return item

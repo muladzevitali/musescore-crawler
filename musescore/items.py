@@ -25,6 +25,7 @@ class MusescoreItem(scrapy.Item):
     uploaded_on: str = scrapy.Field(default=None)
     instruments: str = scrapy.Field(default=None)
     instrumentations: str = scrapy.Field(default=None)
+    category: str = scrapy.Field(default=None)
 
 
 class WikipediaItem(scrapy.Item):
