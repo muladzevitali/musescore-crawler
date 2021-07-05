@@ -2,3 +2,4 @@ scrapy
 protego
 itemadapter
 pandas
+wikipedia
