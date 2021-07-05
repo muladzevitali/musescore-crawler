@@ -28,10 +28,11 @@ class MusescorePipeline:
         adapter = ItemAdapter(item)
         keyword = adapter['search_keyword']
         category = adapter['category']
+        list_name = adapter['list_name']
         if not adapter['title']:
             return
         if keyword not in self.keyword_to_exporter:
-            output_folder = self.output_folder_path.joinpath(category)
+            output_folder = self.output_folder_path.joinpath(category).joinpath(list_name)
             output_folder.mkdir(parents=True, exist_ok=True)
 
             output_file_path = output_folder.joinpath(f'{keyword}.csv')

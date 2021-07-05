@@ -1,6 +1,6 @@
 import json
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 from typing import List
 
 import pandas
@@ -41,14 +41,15 @@ class MusescoreWikipediaSpider(scrapy.Spider):
         for folder in self.wikipedia_outputs_path.iterdir():
             for file_path in folder.iterdir():
                 artist_names = pandas.read_csv(file_path)['artist_name'].values.tolist()
-                _search_words = [(artist_name, folder.name) for artist_name in artist_names]
+                _search_words = [(artist_name, folder.name, file_path.stem) for artist_name in artist_names]
                 search_words.extend(_search_words)
 
-        for (artist_name, category_name) in search_words:
+        for (artist_name, category_name, list_name) in search_words:
             url = self.start_url % ('1', format_search_word(artist_name))
             yield scrapy.Request(url=url, callback=self.parse, meta={'search_keyword': artist_name,
                                                                      'url': url,
-                                                                     'category': category_name})
+                                                                     'category': category_name,
+                                                                     'list_name': list_name})
 
     def parse(self, response, **kwargs):
 
@@ -98,6 +99,7 @@ class MusescoreWikipediaSpider(scrapy.Spider):
         item['uploaded_on'] = datetime.fromtimestamp(result.get('date_created', 0))
         item['instruments'] = ','.join(result.get('instruments'))
         item['category'] = kwargs.get('category')
+        item['list_name'] = kwargs.get('list_name')
 
         if result.get('instrumentations'):
             instrumentations = [each.get('name') for each in result.get('instrumentations')]
