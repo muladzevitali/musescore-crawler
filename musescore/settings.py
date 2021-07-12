@@ -13,11 +13,8 @@ SPIDER_MODULES = ['musescore.spiders']
 NEWSPIDER_MODULE = 'musescore.spiders'
 FILE_NAME = 'path/outputfile.ext'
 
-ITEM_PIPELINES = {
-    'musescore.pipelines.MusescorePipeline': 100,
-    # 'musescore.pipelines.WikipediaPipeline': 200,
-}
-HTTPCACHE_ENABLED=False
+HTTPCACHE_ENABLED = False
+HTTPCACHE_DIR = '.'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'musescore (+http://www.yourdomain.com)'
 DUPEFILTER_CLASS = 'scrapy.dupefilters.BaseDupeFilter'

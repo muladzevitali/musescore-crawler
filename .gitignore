@@ -5,3 +5,4 @@ outputs/
 *.html
 *.csv
 !musicians.csv
+.scrapy/

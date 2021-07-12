@@ -6,6 +6,11 @@ from ..items import WikipediaItem
 
 class WikipediaSpider(scrapy.Spider):
     name = "wikipedia_spider"
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'musescore.pipelines.WikipediaPipeline': 100,
+        },
+    }
     start_url: str = 'https://en.wikipedia.org'
 
     def start_requests(self):

@@ -30,6 +30,11 @@ def prettify_title(title: str) -> str:
 
 class MusescoreSpider(scrapy.Spider):
     name = "musescore_spider"
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'musescore.pipelines.MusescorePipeline': 400,
+        },
+    }
     start_url: str = 'https://musescore.com/sheetmusic?page=%s&text=%s'
     result_per_page = 20
 

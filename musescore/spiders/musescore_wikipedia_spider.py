@@ -31,6 +31,11 @@ def prettify_title(title: str) -> str:
 
 class MusescoreWikipediaSpider(scrapy.Spider):
     name = "musescore_wikipedia_spider"
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'musescore.pipelines.MusescoreWikipediaPipeline': 500,
+        },
+    }
     start_url: str = 'https://musescore.com/sheetmusic?page=%s&text=%s'
     wikipedia_outputs_path = Path('outputs/wikipedia')
     result_per_page = 20

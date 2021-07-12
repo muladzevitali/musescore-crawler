@@ -9,5 +9,7 @@ pip install -r requirements.txt
 
 * Run crawler:
 ```bash
+scrapy crawl wikipedia_spider
+scrapy crawl musescore_wikipedia_spider
 scrapy crawl musescore_spider
 ```
