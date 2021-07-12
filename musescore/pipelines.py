@@ -13,6 +13,7 @@ from scrapy.exporters import CsvItemExporter
 from src.scripts.utils import drop_duplicates_in_sub_folders
 
 MUSESCORE_OUTPUT_FOLDER_PATH = Path('outputs/musescore')
+MUSESCORE_WIKIPEDIA_OUTPUT_FOLDER_PATH = Path('outputs/musescore_wikipedia')
 WIKIPEDIA_OUTPUT_FOLDER_PATH = Path('outputs/wikipedia')
 
 
@@ -52,9 +53,9 @@ class MusescorePipeline:
 
 class MusescoreWikipediaPipeline:
     def __init__(self):
-        self.output_folder_path = MUSESCORE_OUTPUT_FOLDER_PATH
+        self.output_folder_path = MUSESCORE_WIKIPEDIA_OUTPUT_FOLDER_PATH
         self.output_folder_path.mkdir(exist_ok=True, parents=True)
-        atexit.register(drop_duplicates_in_sub_folders, (MUSESCORE_OUTPUT_FOLDER_PATH, 'url'))
+        atexit.register(drop_duplicates_in_sub_folders, (MUSESCORE_WIKIPEDIA_OUTPUT_FOLDER_PATH, 'url'))
 
     def open_spider(self, spider):
         self.keyword_to_exporter = {}
