@@ -25,3 +25,18 @@ def drop_duplicates_in_sub_folders(input_path: Path, column: str) -> None:
     dataframe = pandas.read_csv(input_path)
     dataframe = dataframe.drop_duplicates(subset=column)
     dataframe.to_csv(input_path, index=True)
+
+
+def merge_files_in_folder(folder_path: Path, output_file_path: Path) -> None:
+    overall_dataframe = pandas.DataFrame()
+    for file_path in folder_path.iterdir():
+        if not file_path.name.endswith('csv'):
+            continue
+        dataframe = pandas.read_csv(file_path)
+
+        overall_dataframe = overall_dataframe.append(dataframe)
+
+    if output_file_path.is_dir():
+        output_file_path = output_file_path.joinpath('overall.csv')
+
+    overall_dataframe.to_csv(output_file_path, index=False)

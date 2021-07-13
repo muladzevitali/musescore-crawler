@@ -10,7 +10,7 @@ from pathlib import Path
 from itemadapter import ItemAdapter
 from scrapy.exporters import CsvItemExporter
 
-from src.scripts.utils import drop_duplicates_in_sub_folders
+from src.scripts.utils import (drop_duplicates_in_sub_folders, merge_files_in_folder)
 
 MUSESCORE_OUTPUT_FOLDER_PATH = Path('outputs/musescore')
 MUSESCORE_WIKIPEDIA_OUTPUT_FOLDER_PATH = Path('outputs/musescore_wikipedia')
@@ -21,6 +21,8 @@ class MusescorePipeline:
     def __init__(self):
         self.output_folder_path = MUSESCORE_OUTPUT_FOLDER_PATH
         self.output_folder_path.mkdir(exist_ok=True, parents=True)
+
+        atexit.register(merge_files_in_folder, self.output_folder_path, self.output_folder_path)
 
     def open_spider(self, spider):
         self.keyword_to_exporter = {}
