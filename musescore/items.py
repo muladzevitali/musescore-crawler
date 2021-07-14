@@ -33,3 +33,11 @@ class WikipediaItem(scrapy.Item):
     group: str = scrapy.Field(default=None)
     group_instance: str = scrapy.Field(default=None)
     artist_name: str = scrapy.Field(default=None)
+
+
+class SongGalaxyItem(scrapy.Item):
+    artist_name: str = scrapy.Field(default=None)
+    song_name: str = scrapy.Field(default=None)
+    folder_name: str = scrapy.Field(default=None)
+    search_word: str = scrapy.Field(default=None)
+    md_file_url: str = scrapy.Field(default=None)

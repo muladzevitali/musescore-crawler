@@ -11,7 +11,8 @@ BOT_NAME = 'musescore'
 
 SPIDER_MODULES = ['musescore.spiders']
 NEWSPIDER_MODULE = 'musescore.spiders'
-FILE_NAME = 'path/outputfile.ext'
+MEDIA_ALLOW_REDIRECTS = True
+FILES_STORE = '.'
 
 HTTPCACHE_ENABLED = False
 HTTPCACHE_DIR = '.'
