@@ -41,3 +41,10 @@ class SongGalaxyItem(scrapy.Item):
     folder_name: str = scrapy.Field(default=None)
     search_word: str = scrapy.Field(default=None)
     md_file_url: str = scrapy.Field(default=None)
+
+
+class Midis101Item(scrapy.Item):
+    name: str = scrapy.Field(default=None)
+    folder_name: str = scrapy.Field(default=None)
+    search_word: str = scrapy.Field(default=None)
+    md_file_url: str = scrapy.Field(default=None)

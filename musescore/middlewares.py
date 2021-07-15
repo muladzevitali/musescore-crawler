@@ -5,8 +5,8 @@
 
 from scrapy import signals
 
+
 # useful for handling different item types with a single interface
-from itemadapter import is_item, ItemAdapter
 
 
 class MusescoreSpiderMiddleware:
@@ -101,3 +101,8 @@ class MusescoreDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class ScraperApiProxyMiddleware:
+    def process_request(self, request, spider):
+        request.meta["proxy"] = "http://scraperapi:6aa20f88f2311b79ae3443c6160293ee@proxy-server.scraperapi.com:8001"

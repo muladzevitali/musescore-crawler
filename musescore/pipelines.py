@@ -18,6 +18,7 @@ MUSESCORE_OUTPUT_FOLDER_PATH = Path('outputs/musescore')
 MUSESCORE_WIKIPEDIA_OUTPUT_FOLDER_PATH = Path('outputs/musescore_wikipedia')
 WIKIPEDIA_OUTPUT_FOLDER_PATH = Path('outputs/wikipedia')
 SONGGALAXY_OUTPUT_FOLDER_PATH = Path('outputs/songgalaxy')
+MIDIS101_OUTPUT_FOLDER_PATH = Path('outputs/midis101')
 
 
 class MusescorePipeline:
@@ -166,6 +167,40 @@ class SongGalaxyPipeline:
         return item
 
 
+class Midis101Pipeline:
+    def __init__(self):
+        self.output_folder_path = MIDIS101_OUTPUT_FOLDER_PATH
+        self.output_folder_path.mkdir(exist_ok=True, parents=True)
+
+    def open_spider(self, spider):
+        self.keyword_to_exporter = {}
+
+    def close_spider(self, spider):
+        for exporter, csv_file in self.keyword_to_exporter.values():
+            exporter.finish_exporting()
+            csv_file.close()
+
+    def _exporter_for_item(self, item):
+        adapter = ItemAdapter(item)
+        keyword = adapter['search_word']
+
+        if not adapter['name']:
+            return
+        if keyword not in self.keyword_to_exporter:
+            output_file_path = self.output_folder_path.joinpath(f'{keyword}.csv')
+            csv_file = open(str(output_file_path), 'wb')
+            exporter = CsvItemExporter(csv_file)
+            exporter.start_exporting()
+            self.keyword_to_exporter[keyword] = (exporter, csv_file)
+
+        return self.keyword_to_exporter[keyword][0]
+
+    def process_item(self, item, spider):
+        exporter = self._exporter_for_item(item)
+        exporter.export_item(item)
+        return item
+
+
 class MDFileDownloadPipeline(FilesPipeline):
     def get_media_requests(self, item, info):
         md_file_url = item['md_file_url']
@@ -183,4 +218,28 @@ class MDFileDownloadPipeline(FilesPipeline):
         return str(file_path)
 
     def item_completed(self, results, item, info):
+        return item
+
+
+class Midis101MDFileDownloadPipeline(FilesPipeline):
+    proxy_url = "http://api.scraperapi.com?api_key=6aa20f88f2311b79ae3443c6160293ee&url=%s"
+
+    def get_media_requests(self, item, info):
+        md_file_url = item['md_file_url']
+        for url in [md_file_url]:
+            # url = self.proxy_url % url
+            yield scrapy.Request(url=url)
+
+    def file_path(self, request, response=None, info=None, *, item=None):
+        output_folder_path = MIDIS101_OUTPUT_FOLDER_PATH.joinpath(item['search_word'])
+        output_folder_path = output_folder_path.joinpath(item['folder_name'])
+
+        output_folder_path.mkdir(exist_ok=True, parents=True)
+
+        file_name = request.url.split('/')[-1]
+        file_path = output_folder_path.joinpath(f'{file_name}.mid')
+        return str(file_path)
+
+    def item_completed(self, results, item, info):
+        print(results, item)
         return item

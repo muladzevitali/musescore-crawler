@@ -13,12 +13,25 @@ SPIDER_MODULES = ['musescore.spiders']
 NEWSPIDER_MODULE = 'musescore.spiders'
 MEDIA_ALLOW_REDIRECTS = True
 FILES_STORE = '.'
-
+DOWNLOAD_DELAY = 3
 HTTPCACHE_ENABLED = False
 HTTPCACHE_DIR = '.'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'musescore (+http://www.yourdomain.com)'
 DUPEFILTER_CLASS = 'scrapy.dupefilters.BaseDupeFilter'
+HEADERS = {
+    'Connection': 'keep-alive',
+    'Cache-Control': 'max-age=0',
+    'DNT': '1',
+    'Upgrade-Insecure-Requests': '1',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36',
+    'Sec-Fetch-User': '?1',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+    'Sec-Fetch-Site': 'same-origin',
+    'Sec-Fetch-Mode': 'navigate',
+    'Accept-Encoding': 'gzip, deflate',
+    'Accept-Language': 'en-US,en;q=0.9',
+}
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
