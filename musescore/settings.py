@@ -13,7 +13,6 @@ SPIDER_MODULES = ['musescore.spiders']
 NEWSPIDER_MODULE = 'musescore.spiders'
 MEDIA_ALLOW_REDIRECTS = True
 FILES_STORE = '.'
-DOWNLOAD_DELAY = 3
 HTTPCACHE_ENABLED = False
 HTTPCACHE_DIR = '.'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent

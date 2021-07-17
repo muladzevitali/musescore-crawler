@@ -14,11 +14,10 @@ class Midis101FilesSpiderSpider(scrapy.Spider):
         'DOWNLOADER_MIDDLEWARES': {
             'musescore.middlewares.ScraperApiProxyMiddleware': 222,
         }
-        # 'DOWNLOAD_DELAY': 5,
     }
+
     allowed_domains = ['midis101.com']
     base_domain = 'http://www.midis101.com'
-    proxy_url = "http://api.scraperapi.com?api_key=6aa20f88f2311b79ae3443c6160293ee&country_code=us&url=%s"
 
     file_path = 'outputs/midis101/Italian.csv'
 
@@ -42,3 +41,4 @@ class Midis101FilesSpiderSpider(scrapy.Spider):
                 yield item
             else:
                 print('is', file_path)
+                continue

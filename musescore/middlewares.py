@@ -104,5 +104,6 @@ class MusescoreDownloaderMiddleware:
 
 
 class ScraperApiProxyMiddleware:
+
     def process_request(self, request, spider):
-        request.meta["proxy"] = "http://scraperapi:6aa20f88f2311b79ae3443c6160293ee@proxy-server.scraperapi.com:8001"
+        request.meta["proxy"] = "http://scraperapi:897534acb122cba5430df84fda5ad8de@proxy-server.scraperapi.com:8001"
