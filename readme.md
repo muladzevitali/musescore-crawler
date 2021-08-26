@@ -17,4 +17,5 @@ scrapy crawl wikipedia_spider
 scrapy crawl musescore_wikipedia_spider
 scrapy crawl musescore_spider
 scrapy crawl songgalaxy_spider
+scrapy crawl genius
 ```
